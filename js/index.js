@@ -63,6 +63,12 @@ const app = new Vue({
             this.displayPop = true;
             localStorage.setItem("pop", JSON.stringify(true))
         },
+        //delete jokes from local storage
+        deleteJoke: function () {
+            this.jokesLiked = [];
+            localStorage.setItem("like", JSON.stringify(this.jokesLiked));
+            this.likedSwitch = false;
+        },      
         parse(data) {
             return JSON.parse(data)
         },
@@ -144,5 +150,3 @@ swiper.add({
         console.log('You swiped up.');
     }
 })
-
-
