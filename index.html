@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jokes app</title>
+  <meta name="description"
+    content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bethropolis.github.io/jokes-app" />
+  <meta property="og:title" content="jokes app" />
+  <meta property="og:description"
+    content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
+  <meta property="og:image" content="img/graphic.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://bethropolis.github.io/jokes-app" />
+  <meta property="twitter:title" content="jokes app" />
+  <meta property="twitter:description"
+    content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
+  <meta property="twitter:image" content="img/graphic.png" />
+  <meta name="theme-color" content="rgb(3, 169, 244)" />
+  <!-- Windows Phone -->
+  <meta name="msapplication-navbutton-color" content="rgb(3, 169, 244)" />
+  <!-- iOS Safari img/web/-->
+  <meta name="apple-mobile-web-app-status-bar-style" content="rgb(3, 169, 244)" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="stylesheet" href="lib/materialize/css/materialize.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/vue/vue.min.js"></script>
+</head>
+
+<body class="center jks">
+  <div id="app">
+    <nav class="nav nav-wrapper jks"><span class="caption brand-logo text0-accent-4 left jks">Jokes</span></nav>
+    <br>
+    <div class="center container">
+      <h3 v-if="jokesCurrent.type == 'single'" class="thick">{{jokesCurrent.joke}}</h3>
+      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">{{jokesCurrent.setup}}</h3>
+      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">{{jokesCurrent.delivery}}</h3>
+    </div>
+    <button @click="nextJoke" class="btn jkp jkp-btn">another joke</button>
+  </div>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

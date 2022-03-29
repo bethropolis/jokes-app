@@ -1,0 +1,39 @@
+{
+    "name": "jokes app",
+    "short_name": "jokey",
+    "lang": "en-GB",
+    "description": "Get a laugh from the most hilarious puns you will ever read with the jokes web app.",
+    "start_url": "./",
+    "id": "/jokes-app/",
+    "scope": "./",
+    "theme_color": "#03a9f4",
+    "background_color": "#ffffff",
+    "orientation": "portrait",
+    "display": "fullscreen",
+    "icons": [
+        {
+            "src": "img/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "img/icon-192-maskable.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "img/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        },
+        {
+            "src": "img/icon-512-maskable.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        }
+    ]
+}

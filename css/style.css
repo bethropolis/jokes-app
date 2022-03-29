@@ -1,0 +1,43 @@
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --main: #03a9f4;
+  --main-color: #ffffff;
+  --font: Arial, Helvetica, sans-serif;
+}
+
+.jks {
+  background-color: var(--main);
+  color: var(--main-color);
+}
+.jkp {
+  background-color: var(--main-color);
+  color: var(--main);
+}
+.fon {
+  font-family: var(--font);
+}
+.jkp-btn {
+  margin: 0;
+  position: fixed;
+  margin: 0 auto;
+  bottom: 20px;
+  left: 50%;
+  width: 200px;
+  margin-left: -100px;
+  border-radius: 1.8em;
+}
+.jkp-btn:hover{
+    background-color: var(--main);
+    color: var(--main-color);
+}
+
+.jkp-btn:focus{
+    background-color: var(--main-color);
+    color: var(--main);
+    opacity: .7;
+}
