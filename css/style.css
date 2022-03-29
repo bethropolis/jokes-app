@@ -1,23 +1,45 @@
-body {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 :root {
   --main: #03a9f4;
   --main-color: #ffffff;
   --font: Arial, Helvetica, sans-serif;
 }
 
+body {
+  box-sizing: border-box;
+  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li{
+  font-weight: 600;
+  font-size: medium;
+}
+
 .jks {
   background-color: var(--main);
   color: var(--main-color);
 }
-.jkp {
-  background-color: var(--main-color);
-  color: var(--main);
+.jkp, .jkp:hover {
+  background-color: var(--main-color) !important;
+  color: var(--main) !important;
 }
+
+.jkp:active{
+    animation: jkp-animation 0.9s ease-in-out;
+    animation-fill-mode: forwards;
+    -webkit-animation: jkp-animation 0.9s ease-in-out;
+}
+/* fade in and out */
+@keyframes jkp-animation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .fon {
   font-family: var(--font);
 }
@@ -32,9 +54,59 @@ body {
   border-radius: 1.8em;
 }
 .jkp-btn:hover {
-  background-color: var(--main);
-  color: var(--main-color);
+  background-color: var(--main) !important;
+  color: var(--main-color) !important;
 }
+
+.cover {
+  position: fixed;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  background: #1f1f1fd1;
+}
+
+.cover .container {
+  position: relative;
+  margin: auto;
+  width: 50%;
+  min-width: 200px;
+  max-width: 450px;
+  height: auto;
+  background: #fff;
+  padding: 0.6em;
+  border-radius: 1.2em;
+  -webkit-border-radius: 1.2em;
+  -moz-border-radius: 1.2em;
+  -ms-border-radius: 1.2em;
+  -o-border-radius: 1.2em;
+}
+.cover .container  .tri{
+  position: absolute;
+  right: 20px;
+  font-size: 27px;
+  width: 30px;
+  border-radius: 50%;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+.cover .container  .tri:hover{
+  background-color: #eee;
+}
+#like-it{
+  display: flex;
+  justify-content: center;
+}
+
+
 
 .jkp-btn:focus {
   background-color: var(--main-color);

@@ -31,25 +31,66 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="rgb(3, 169, 244)" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
   <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
-  <link rel="manifest" href="app.webmanifest">
-  <link rel="stylesheet" href="lib/materialize/css/materialize.min.css">
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="app.webmanifest" />
+  <link rel="stylesheet" href="lib/materialize/css/materialize.min.css" />
+  <link rel="stylesheet" href="lib/materialize/css/icon.css" />
+  <link rel="stylesheet" href="css/style.css?a" />
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/vue/vue.min.js"></script>
+  <script src="js/swipper.js"></script>
 </head>
 
 <body class="center jks">
   <div id="app">
-    <nav class="nav nav-wrapper jks"><span class="caption brand-logo text0-accent-4 left jks">Jokes</span></nav>
-    <br>
-    <div class="center container">
-      <h3 v-if="jokesCurrent.type == 'single'" class="thick">{{jokesCurrent.joke}}</h3>
-      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">{{jokesCurrent.setup}}</h3>
-      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">{{jokesCurrent.delivery}}</h3>
+    <div v-show="!displayPop" @click="closePop" class="cover jks">
+      <div class="container center-align hoverable">
+        <span class="red-text tri" @click="closePop">x</span>
+        <h3 class="black-text">welcome</h3>
+        <p class="black-text flow-text">
+          my name is Bethuel, this is a fun project to keep you entertained,
+          the whole code is on github. You can checkout more of my projects
+          click below.
+        </p>
+        <div class="row">
+          <a href="https://bethropolis.github.io/"><button class="btn black darken-2 text-white">Github</button></a>
+          <a href="https://github.com/bethropolis/jokes-app"><button class="btn light-blue">More project</button></a>
+        </div>
+        <span class="red-text" id="cls1"></span>
+      </div>
     </div>
+    <nav>
+      <div class="nav-wrapper jks">
+        <a href="#" class="caption brand-logo text0-accent-4 left">Jokes</a>
+        <ul id="nav-mobile" class="right">
+          <li><a href="#" v-if="likedSwitch" @click="loadJokes">jokes</a></li>
+          <li>
+            <a href="#" v-if="!likedSwitch" @click="loadLiked">liked</a>
+          </li>
+          <li>
+            <a href="https://github.com/bethropolis/jokes-app">Github</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br />
+    <div class="center container">
+      <h3 v-if="jokesCurrent.type == 'single'" class="thick">
+        {{jokesCurrent.joke}}
+      </h3>
+      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">
+        {{jokesCurrent.setup}}
+      </h3>
+      <h3 v-if="jokesCurrent.type == 'twopart'" class="thick">
+        {{jokesCurrent.delivery}}
+      </h3>
+    </div>
+    <button @click="likeJoke" class="center-align row btn-floating red-text jkp center pulse">
+      <span class="material-icons  center red-text center-align" id="like-it">favorite</span>
+    </button>
     <button @click="nextJoke" class="btn jkp jkp-btn">another joke</button>
   </div>
-  <script src="js/index.js"></script>
+  
+  <script src="js/index.js?p"></script>
 </body>
 
 </html>
