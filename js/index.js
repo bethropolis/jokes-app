@@ -5,7 +5,7 @@ const app = new Vue({
         jokesLiked: JSON.parse(localStorage.getItem("like")) || [],
         likedSwitch: false,
         notify: "",
-        view: false,
+        view: true,
         jokesList: [],
         jokesCount: 0,
         jokesLimit: 9,
