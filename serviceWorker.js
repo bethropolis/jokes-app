@@ -33,7 +33,7 @@ self.addEventListener("activate", (e) => {
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
-          if (key === joke) {
+          if (key === Joke) {
             return;
           }
           return caches.delete(key);
