@@ -30,7 +30,7 @@ const Swipe = class {
     }
 
     onDown() {
-        //this.options.onDown();
+      this.options.onDown();
     }
     checkLimit(){
         if (app.isLimit()) {
@@ -88,3 +88,7 @@ const Swipe = class {
 }
 
 let swiper = new Swipe();
+
+
+// 
+

@@ -1,6 +1,6 @@
 {
-    "name": "jokes app",
-    "short_name": "jokey",
+    "name": "jokes to like",
+    "short_name": "JKL",
     "lang": "en-GB",
     "start_url": "./",
     "id": "/jokes-app/",

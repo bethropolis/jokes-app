@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jokes app</title>
+  <title>Jokes to Like</title>
   <meta name="description"
     content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bethropolis.github.io/jokes-app" />
-  <meta property="og:title" content="jokes app" />
+  <meta property="og:title" content="jokes to like" />
   <meta property="og:description"
     content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
   <meta property="og:image" content="img/graphic.png" />
@@ -20,7 +20,7 @@
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://bethropolis.github.io/jokes-app" />
-  <meta property="twitter:title" content="jokes app" />
+  <meta property="twitter:title" content="jokes to like" />
   <meta property="twitter:description"
     content="Get a laugh from the most hilarious puns you will ever read with the jokes web app." />
   <meta property="twitter:image" content="img/graphic.png" />
@@ -34,24 +34,69 @@
   <link rel="manifest" href="app.webmanifest" />
   <link rel="stylesheet" href="lib/materialize/css/materialize.min.css" />
   <link rel="stylesheet" href="lib/materialize/css/icon.css" />
-  <link rel="stylesheet" href="css/style.css?a" />
+  <link rel="stylesheet" href="css/style.css" />
   <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/materialize/js/materialize.min.js"></script>
   <script src="lib/vue/vue.min.js"></script>
   <script src="js/swipper.js"></script>
 </head>
 
 <body class="center jks">
+
   <div id="app">
-    <div v-show="!displayPop" @click="closePop" class="cover jks">
+    <div id="notification" class="notification black d">
+      <div class="notification-content row">
+        <div class="notification-text center-align col s10">
+          <p>{{notify}}</p>
+        </div>
+        <div class="notification-closet center-align col s2">
+          <i class="material-icons" @click="hideNitification">close</i>
+        </div>
+      </div>
+    </div>
+    <div v-show="!displayPop" class="cover jks">
       <div class="container center-align hoverable">
-        <span class="red-text tri" @click="closePop">x</span>
-        <h3 class="black-text">welcome</h3>
-        <p class="black-text flow-text">
-          my name is Bethuel, this is a fun project to keep you entertained,
-          the whole code is on github. You can checkout more of my projects
-          click below.
+        <div class="col tri red-text"><i class="material-icons" @click="closePop">close</i></div>
+        <h3 class="black-text" v-show="view">Welcome</h3>
+        <p v-show="view" class="black-text">this are your shortcuts</p>
+        <h3 class="black-text"  v-show="!view">please select type of joke</h3>
+        <p class="black-text center-align flow-text">
+        <div v-show="device && view" class="left-align">
+          <li><code>swipe-up</code> to like</li>
+          <li><code>swipe-left</code> go to previous entry</li>
+          <li><code>swipe-right</code> go to next entry</li>
+          <li><code>swip-down</code> to fetch new jokes</li>
+        </div>
+        <div v-show="!device && view" class="left-align">
+          <li><code>top-arrow-key/space</code> to like</li>
+          <li><code>left-arrow-key</code> go to previous entry</li>
+          <li><code>right-arrow-key</code> go to next entry</li>
+          <li><code>enter-key</code> fetch new jokes</li>
+          <li><code>delete-key</code> to unlike</li>
+          <li><code>C</code> to change color</li>
+          <li><code>P</code> to close/open this popup</li>
+          <li><code>w</code> to refresh page</li>
+        </div>
+        <div v-show="!view" class="">
+          <div class="input-field col s8 left-align">
+            <select class="options" multiple>
+              <option value="all" disabled>all</option>
+              <option value="pun">pun</option>
+              <option value="Programming">Programming</option>
+              <option value="Miscellaneous">Miscellaneous</option>
+              <option value="Spooky">Spooky</option>
+              <option value="Dark">Dark</option>
+            </select>
+            <label>select your preferred joke</label>
+          </div>
+          <button class="btn waves-effect light-blue waves-light" @click="setFunc" type="submit">set
+            <i class="material-icons right">settings</i>
+          </button>
+        </div>
+
+        
         </p>
-        <div class="row">
+        <div class="row"  v-show="view">
           <a href="https://bethropolis.github.io/"><button class="btn black darken-2 text-white">Github</button></a>
           <a href="https://github.com/bethropolis/jokes-app"><button class="btn light-blue">More project</button></a>
         </div>
@@ -60,20 +105,36 @@
     </div>
     <nav>
       <div class="nav-wrapper jks">
-        <a href="#" class="caption brand-logo text0-accent-4 left">Jokes</a>
+        <a href="#" class="caption user brand-logo text0-accent-4 left" title="jokes to like">J<span
+            class="red-text">T</span>L</a>
         <ul id="nav-mobile" class="right">
-          <li><a href="#" v-if="likedSwitch" @click="loadJokes">jokes</a></li>
+          <li><a href="#" v-if="likedSwitch" class="left" @click.prevent="loadJokes">jokes</a></li>
           <li>
-            <a href="#" v-if="!likedSwitch" @click="loadLiked">liked</a>
+            <a href="#" v-if="!likedSwitch" @click.prevent="loadLiked" title="liked jokes"><i
+                class="material-icons">favorite</i></a>
           </li>
           <li>
-            <a href="https://github.com/bethropolis/jokes-app">Github</a>
+            <a href="#" v-if="!likedSwitch" @click.prevent="settings" title="liked jokes"><i
+                class="material-icons">settings</i></a>
+          </li>          
+          <li>
+            <a href="#"  @click.prevent="share" title="share joke to friends"><i
+                class="material-icons">share</i></a>
           </li>
         </ul>
       </div>
     </nav>
-    <br />
-    <div class="center container">
+    <!-- jokes counter -->
+    <div v-if="likedSwitch" class="row">
+      <div class="col s12">
+        <p>
+          <span class="red-text accent-2">{{jokesCount}}</span>
+          <span class="black-text">/</span>
+          <span class="red-text accent-2">{{jokesLimit}}</span>
+        </p>
+      </div>
+    </div>
+    <div class="center container" id="joke">
       <h3 v-if="jokesCurrent.type == 'single'" class="thick">
         {{jokesCurrent.joke}}
       </h3>
@@ -84,13 +145,16 @@
         {{jokesCurrent.delivery}}
       </h3>
     </div>
-    <button @click="likeJoke" class="center-align row btn-floating red-text jkp center pulse">
+    <button @click="likeJoke" v-show="!likedSwitch" class="center-align row btn-floating red-text jkp center pulse">
       <span class="material-icons  center red-text center-align" id="like-it">favorite</span>
+    </button>
+    <button @click="removeLiked" v-show="likedSwitch" class="center-align row btn-floating red-text jkp center pulse">
+      <span class="material-icons  center red-text center-align" id="like-it">delete</span>
     </button>
     <button @click="nextJoke" class="btn jkp jkp-btn">another joke</button>
   </div>
-  
-  <script src="js/index.js?p"></script>
+
+  <script src="js/index.js"></script>
 </body>
 
 </html>
