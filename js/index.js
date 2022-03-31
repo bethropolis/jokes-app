@@ -20,7 +20,7 @@ const app = new Vue({
             "#5d4037",
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
-        url: "https://v2.jokeapi.dev/joke/Any?amount=20",
+        url: "https://v2.jokeapi.dev/joke/All?amount=20",
         device: true,
     },
     methods: {
@@ -200,6 +200,7 @@ const app = new Vue({
         },
         getOptions: function () {
             let s = $("input").val();
+            if (!s) return 'all';
             let q = s.split(" ").join("");
             return q;
         },
@@ -213,7 +214,7 @@ const app = new Vue({
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
         toggleLiked: function () {
-            if(this.likedSwitch) {
+            if (this.likedSwitch) {
                 this.loadJokes();
                 return;
             }
@@ -226,6 +227,8 @@ const app = new Vue({
                     /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
                 if (regex.test(url)) {
                     this.url = url;
+                }else{
+                    this.url = "https://v2.jokeapi.dev/joke/All?amount=20";
                 }
             }
         },
@@ -233,7 +236,7 @@ const app = new Vue({
             return JSON.parse(localStorage.getItem("jokes"));
         },
         localStorageSize: function () {
-            let _lsTotal = 0,_xLen, _x;
+            let _lsTotal = 0, _xLen, _x;
             for (_x in localStorage) {
                 if (!localStorage.hasOwnProperty(_x)) continue;
                 _xLen = (localStorage[_x].length + _x.length) * 2;
