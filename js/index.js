@@ -5,18 +5,21 @@ const app = new Vue({
         jokesLiked: [],
         likedSwitch: false,
         notify: "",
+        colorTheme: JSON.parse(localStorage.getItem("colorTheme")) || false,
         view: true,
         jokesList: JSON.parse(localStorage.getItem("jokes")) || [],
         jokesCount: 0,
         jokesLimit: 9,
         jokesCurrent: JSON.parse(localStorage.getItem("joke")) || [],
         colors: [
-            "#d32f2f ",
-            "#ba68c8",
+            "#c0392b",
+            "#1B1464",
             "#3d5afe",
-            "#00796b",
+            "#006266",
             "#03a9f4",
             "#9e9d24 ",
+            "#cd6133",
+            "#c2185b",
             "#5d4037",
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
@@ -33,8 +36,8 @@ const app = new Vue({
             }
             let url = this.url;
             await $.get(url, (data) => {
-                if (data.error ) return alert("an error occured getting more jokes");
-                if(this.likedSwitch)return ;
+                if (data.error) return alert("an error occured getting more jokes");
+                if (this.likedSwitch) return;
                 this.jokesList = data.jokes;
                 this.store("jokes", data.jokes, true);
                 //this.jokesCurrent = this.jokesList[0];
@@ -89,6 +92,8 @@ const app = new Vue({
         },
         // toggle pop
         likeJoke: function () {
+            // do not store joke match an item in jokesLiked.id
+            if (this.jokesLiked.includes(this.jokesCurrent)) return this.showNotification("You already liked this joke");
             if (!this.likedSwitch) {
                 if (this.jokesLiked) {
                     this.store("like", this.jokesCurrent, true);
@@ -98,16 +103,33 @@ const app = new Vue({
                 this.showNotification("Joke Liked!");
                 return;
             }
-            this.removeLiked()          
+            this.removeLiked()
         },
-        changeColor: function (id = Math.floor(Math.random() * 6) + 1) {
-            document.documentElement.style.setProperty("--main", this.colors[id]);
+        setColor: function (id) {
+            document.documentElement.style.setProperty("--main", id);
             document
                 .querySelector('meta[name="theme-color"]')
-                .setAttribute("content", this.colors[id]);
+                .setAttribute("content", id);
             document
                 .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
-                .setAttribute("content", this.colors[id]);
+                .setAttribute("content", id);
+        },
+        changeColor: function (id = Math.floor(Math.random() * 9)) {
+            if (this.colorTheme) return;
+            this.setColor(this.colors[id]);
+        },
+        darkMode: function (cl) {
+            let color = '#1e272e';
+            this.colorTheme = color;
+            this.store("colorTheme", color, false);
+        },
+        colorMode: function () {
+            this.colorTheme = false;
+            this.changeColor();
+        },
+        customColor: function () {
+            this.colorTheme = $("#colorPick").val();
+            this.store("colorTheme", this.colorTheme, false);
         },
         //delete jokes from local storage
         closePop: function () {
@@ -224,6 +246,13 @@ const app = new Vue({
                 }
             }
         },
+        screenshot: function () {
+            new Screenshot({
+                success: img => {
+                    console.log(img);
+                }, sound: true
+            });
+        },
         localJokes: function () {
             return JSON.parse(localStorage.getItem("jokes"));
         },
@@ -265,6 +294,10 @@ const app = new Vue({
             if (!this.jokesCurrent || this.likedSwitch) return;
             localStorage.setItem("joke", JSON.stringify(this.jokesCurrent));
         },
+        colorTheme: function () {
+            if (!this.colorTheme) return;
+            this.setColor(this.colorTheme);
+        },
         displayPop: function (params) {
             // if(localStorage.getItem('url')) return
             // this.view = false;
@@ -275,6 +308,8 @@ const app = new Vue({
         this.getJokes();
         this.getUrl();
         this.device = this.isMobile();
+        if (this.colorTheme) this.setColor(this.colorTheme);
+        $('.tooltipped').tooltip();
     },
 });
 
@@ -313,8 +348,10 @@ document.addEventListener("keydown", function (event) {
         app.prevJoke();
     } else if (event.keyCode == 39) {
         app.nextJoke();
-    } else if (event.keyCode == 38 || event.keyCode == 32) {
+    } else if (event.keyCode == 38) {
         app.likeJoke();
+    } else if (event.keyCode == 32) {
+        app.screenshot();
     } else if (event.keyCode == 13) {
         app.reset();
     } else if (event.keyCode == 87) {
@@ -329,4 +366,4 @@ document.addEventListener("keydown", function (event) {
         app.toggleLiked();
     }
 });
-
+// screenshot api to take screenshots of the current page
