@@ -57,6 +57,7 @@
     <div v-show="!displayPop" class="cover jks">
       <div class="container center-align hoverable">
         <div class="col tri red-text"><i class="material-icons" @click="closePop">close</i></div>
+        <br>
         <h3 class="black-text" v-show="view">Welcome</h3>
         <p v-show="view" class="black-text">this are your shortcuts</p>
         <h4 class="black-text" v-show="!view">please select type of joke</h4>
@@ -82,7 +83,7 @@
         <div v-show="!view" class="">
           <div class="input-field left-align">
             <select class="options" value="hello world" multiple>
-              <option value="all" disabled selected>all</option>
+              <option value="all" disabled>all</option>
               <option value="pun">pun</option>
               <option value="Programming">Programming</option>
               <option value="Miscellaneous">Miscellaneous</option>
