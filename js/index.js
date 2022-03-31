@@ -2,7 +2,7 @@ const app = new Vue({
     el: "#app",
     data: {
         displayPop: JSON.parse(localStorage.getItem("pop")) || null,
-        jokesLiked: JSON.parse(localStorage.getItem("like")) || [],
+        jokesLiked: [],
         likedSwitch: false,
         notify: "",
         view: true,
@@ -20,7 +20,7 @@ const app = new Vue({
             "#5d4037",
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
-        url: "https://v2.jokeapi.dev/joke/Any?amount=20",
+        url: "https://v2.jokeapi.dev/joke/Miscellaneous,Pun?blacklistFlags=nsfw,racist,explicit&amount=10",
         device: true,
     },
     methods: {
@@ -68,10 +68,6 @@ const app = new Vue({
             }
             this.jokesCount = this.jokesCount - 1;
         },
-        setFunc: function () {
-            let inp = this.getOptions();
-            this.updateUrl(inp);
-        },
         removeLiked: function () {
             if (!this.likedSwitch)
                 return this.showNotification("You haven't saved this joke");
@@ -85,8 +81,8 @@ const app = new Vue({
             this.jokesCount = i;
             this.jokesCurrent = this.jokesList[this.jokesCount];
             this.jokesList.splice(index, 1);
-            this.jokesLiked = this.jokesList;
-            localStorage.setItem("like", JSON.stringify(this.jokesLiked));
+            //this.jokesLiked = this.jokesList;
+            localStorage.setItem("like", JSON.stringify(this.jokesList));
             this.showNotification("Joke removed from liked");
             this.loadJokes();
         },
@@ -114,7 +110,7 @@ const app = new Vue({
         },
         //delete jokes from local storage
         closePop: function () {
-            if(this.getUrl()) this.toggleView();
+            if (this.getUrl()) this.toggleView();
             this.displayPop = true;
             localStorage.setItem("pop", JSON.stringify(true));
         },
@@ -133,7 +129,7 @@ const app = new Vue({
                 navigator.share({
                     title: "Joke",
                     text: joke,
-                    url: "https://bethropolis.github.io/jokes-app/",
+                    url: "https://jokes-to-like.vercel.app/",
                 });
             }
         }, // update url + slug
@@ -142,7 +138,6 @@ const app = new Vue({
             this.url = url;
             localStorage.setItem("url", url);
             this.showNotification("url updated");
-            this.togglePop();
             this.getJokes();
         },
         showNotification: function (txt) {
@@ -156,11 +151,11 @@ const app = new Vue({
             document.querySelector(".notification").classList.remove("show");
         },
         loadJokes: function () {
-            this.reset();
             this.likedSwitch = false;
         },
-        loadLiked: function () {
-            if (this.jokesLiked.length == []) {
+        loadLiked: async function () {
+            this.jokesLiked = JSON.parse(localStorage.getItem("like")) || [];
+            if (!this.jokesLiked.length) {
                 return this.showNotification("no jokes liked");
             }
             this.jokesCount = 0;
@@ -199,18 +194,12 @@ const app = new Vue({
             this.view = false;
             this.togglePop();
         },
-        getOptions: function () {
-            let s = $("input").val();
-            if (!s) return 'Any';
-            let q = s.split(" ").join("");
-            return q;
-        },
         // toggle view and call display pop
         toggleView: function () {
             this.view = !this.view;
             this.togglePop();
         },
-        togglePop: function () {          
+        togglePop: function () {
             this.displayPop = !this.displayPop;
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
@@ -228,7 +217,7 @@ const app = new Vue({
                     /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
                 if (regex.test(url)) {
                     this.url = url;
-                }else{
+                } else {
                     this.url = "https://v2.jokeapi.dev/joke/All?amount=20";
                     return true
                 }
@@ -251,7 +240,7 @@ const app = new Vue({
     watch: {
         likedSwitch: async function () {
             if (this.likedSwitch) {
-                if (this.jokesLiked == []) {
+                if (!this.jokesLiked.length) {
                     this.jokesLiked = [];
                     await this.showNotification("no liked jokes");
                     return;
@@ -272,15 +261,19 @@ const app = new Vue({
             this.jokesCurrent = this.jokesList[this.jokesCount];
         },
         jokesCurrent: function () {
-            if (!this.jokesCurrent && this.likedSwitch) return;
+            if (!this.jokesCurrent || this.likedSwitch) return;
             localStorage.setItem("joke", JSON.stringify(this.jokesCurrent));
         },
+        displayPop: function (params) {
+            // if(localStorage.getItem('url')) return
+            // this.view = false;
+        }
+
     },
     mounted() {
         this.getJokes();
         this.getUrl();
         this.device = this.isMobile();
-        $("select").formSelect();
     },
 });
 

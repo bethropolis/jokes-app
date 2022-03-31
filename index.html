@@ -33,7 +33,7 @@
   <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="app.webmanifest" />
   <link rel="stylesheet" href="lib/materialize/css/materialize.min.css" />
-  <link rel="stylesheet" href="lib/materialize/css/icon.css" />
+  <link rel="stylesheet" defer href="lib/materialize/css/icon.css" />
   <link rel="stylesheet" href="css/style.css" />
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/materialize/js/materialize.min.js"></script>
@@ -82,61 +82,67 @@
         </div>
         <div v-show="!view" class="">
           <div class="input-field left-align">
-            <!-- <form action="#">
-              <p>
-                <label>
-                  <input name="group1" type="radio" checked />
-                  <span>Red</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input name="group1" type="radio" />
-                  <span>Yellow</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input class="with-gap" name="group1" type="radio"  />
-                  <span>Green</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input name="group1" type="radio" disabled="disabled" />
-                  <span>Brown</span>
-                </label>
-              </p>
-            </form> -->
-            <label>select your preferred joke</label>
-          
-          <button class="btn waves-effect light-blue waves-light" @click="setFunc" type="submit">set
-            <i class="material-icons right">settings</i>
-          </button>
-        </div>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('Any')" name="group1" type="radio" />
+                <span>any</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('pun')" name="group1" type="radio" checked/>
+                <span>pun</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('Programming')" name="group1" type="radio" />
+                <span>Programming</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('Miscellaneous')" name="group1" type="radio" />
+                <span>Miscellaneous</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('Spooky')" name="group1" type="radio" />
+                <span>Spooky</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input class="with-gap col s12" @click="updateUrl('Dark')" name="group1" type="radio" />
+                <span>Dark</span>
+              </label>
+            </p>
+            </form><br>
+          </div>
           <br>
           <div class="clear">
-          <h4  class="black-text"> clear stored jokes on device</h4>
-          <label for="clearData">click below to clear</label><br>
-          <button class="btn waves-effect red accent-2 waves-light" id="clearData" @click="clear" type="submit">clear data
-            <i class="material-icons right">delete</i>
-          </button>
+            <h4 class="black-text"> clear stored jokes on device</h4>
+            <label for="clearData">click below to clear</label><br>
+            <button class="btn waves-effect red accent-2 waves-light" id="clearData" @click="clear" type="submit">clear
+              data
+              <i class="material-icons right">delete</i>
+            </button>
+          </div>
         </div>
-        </div>
-
-
         </p>
         <div class="row" v-show="view">
-          <a href="https://bethropolis.github.io/"><button class="btn black darken-2 text-white">Github</button></a>
-          <a href="https://github.com/bethropolis/jokes-app"><button class="btn light-blue">More project</button></a>
+          <a href="https://github.com/bethropolis/jokes-app/"><button
+              class="btn black darken-2 text-white">Github</button></a>
+          <a href="https://bethropolis.github.io/"><button class="btn light-blue">More projects</button></a>
         </div>
         <span class="red-text" id="cls1"></span>
       </div>
     </div>
     <nav>
       <div class="nav-wrapper jks">
-        <a href="#" class="caption user brand-logo logo text0-accent-4 left" @click.prevent="window.location.reload()" title="jokes to like">J<span
-            class="red-text">T</span>L</a>
+        <a href="#" class="caption user brand-logo logo text0-accent-4 left" @click.prevent="window.location.reload()"
+          title="jokes to like">J<span class="red-text">T</span>L</a>
         <ul id="nav-mobile" class="right">
           <li><a href="#" v-if="likedSwitch" class="left" @click.prevent="loadJokes">jokes</a></li>
           <li>
@@ -180,7 +186,7 @@
     <button @click="removeLiked" v-show="likedSwitch" class="center-align row btn-floating red-text jkp center pulse">
       <span class="material-icons  center red-text center-align" id="like-it">delete</span>
     </button>
-    <button @click="nextJoke" class="btn jkp jkp-btn">another joke</button>
+    <button @click="nextJoke" class="btn jkp jkp-btn waves-effect waves-light">another joke</button>
   </div>
 
   <script src="js/index.js"></script>

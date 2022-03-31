@@ -183,5 +183,4 @@ li{
 .jkp-btn:focus {
   background-color: var(--main-color);
   color: var(--main);
-  opacity: 0.7;
 }
