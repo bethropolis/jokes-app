@@ -23,6 +23,8 @@ const app = new Vue({
                 if (data.error) return alert("an error occured getting more jokes");
                 this.jokesList = data.jokes;
                 this.jokesCurrent = this.jokesList[0];
+            },()=>{
+                this.showNotification("could not fetch new message");
             });
         },
         isLimit: function (cancel = false) {
@@ -114,7 +116,7 @@ const app = new Vue({
                 navigator.share({
                     title: "Joke",
                     text: joke,
-                    url: "https://joke-app-vue.firebaseapp.com/",
+                    url: "https://bethropolis.github.io/jokes-app/",
                 });
             }
         }, // update url + slug
@@ -226,7 +228,7 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker
         .register("serviceWorker.js")
         .then(function (registration) {
-            console.log("Registration successful, scope is:", registration.scope);
+            //console.log("Registration successful, scope is:", registration.scope);
         })
         .catch(function (error) {
             console.log("Service worker registration failed, error:", error);
@@ -244,8 +246,8 @@ swiper.add({
         app.likeJoke();
     },
     onDown() {
-        app.reset();
-        app.changeColor();
+        app.view = true;
+        app.togglePop();
     },
 });
 
