@@ -6,7 +6,7 @@ const app = new Vue({
         likedSwitch: false,
         notify: "",
         view: true,
-        jokesList: [],
+        jokesList: JSON.parse(localStorage.getItem("jokes")) || [],
         jokesCount: 0,
         jokesLimit: 9,
         jokesCurrent: JSON.parse(localStorage.getItem("joke")) || [],
@@ -21,18 +21,22 @@ const app = new Vue({
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
         url: "https://v2.jokeapi.dev/joke/Any?amount=20",
-        device: false,
+        device: true,
     },
     methods: {
-        getJokes: function () {
+        getJokes: async function () {
             if (this.likedSwitch) return;
+            if (!this.isOnline()) {
+                this.jokesList = this.localJokes();
+                this.showNotification("you are viewing offline jokes");
+                return;
+            }
             let url = this.url;
-            $.get(url, (data) => {
+            await $.get(url, (data) => {
                 if (data.error) return alert("an error occured getting more jokes");
                 this.jokesList = data.jokes;
-                this.store('jokes', data.jokes, false);
-                 //this.jokesCurrent = this.jokesList[0];
-
+                this.store("jokes", data.jokes, true);
+                //this.jokesCurrent = this.jokesList[0];
             });
         },
         isLimit: function (cancel = false) {
@@ -46,9 +50,10 @@ const app = new Vue({
             setCount();
             return true;
         },
-        nextJoke: function () {
+        nextJoke: async function () {
             if (this.isLimit(true)) {
-                this.reset();
+                await setCount();
+                await this.reset();
                 return true;
             }
             this.jokesCount++;
@@ -56,12 +61,12 @@ const app = new Vue({
         setCount: function (c = 0) {
             this.jokesCount = c;
         },
-        prevJoke: function () {
+        prevJoke: async function () {
             if (this.isLimit()) {
-                this.reset();
+                await this.reset();
                 return true;
             }
-            this.jokesCount = this.jokesCount-1;
+            this.jokesCount = this.jokesCount - 1;
         },
         setFunc: function () {
             let inp = this.getOptions();
@@ -154,8 +159,10 @@ const app = new Vue({
             this.likedSwitch = false;
         },
         loadLiked: function () {
-            if (this.jokesLiked.length == [])
+            if (this.jokesLiked.length == []) {
                 return this.showNotification("no jokes liked");
+            }
+            this.jokesCount = 0;
             this.likedSwitch = true;
         },
         stringify: function (data) {
@@ -170,8 +177,22 @@ const app = new Vue({
             }
             localStorage.setItem(key, value);
         },
+        clear: function () {
+            let x = confirm(`Are you sure you want to clear all offline jokes? (${this.localStorageSize()}kb)`);
+            if (x) {
+                localStorage.clear();
+                this.showNotification("data cleared");
+                window.location.reload();
+            }
+
+            this.togglePop();
+        },
         isMobile: function () {
             return "ontouchstart" in window;
+        },
+        // is user online
+        isOnline: function () {
+            return navigator.onLine;
         },
         settings: function () {
             this.view = false;
@@ -191,31 +212,42 @@ const app = new Vue({
             this.displayPop = !this.displayPop;
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
+        // toggle liked switch
+
         getUrl: function () {
             if (localStorage.getItem("url")) {
                 let url = localStorage.getItem("url");
-                let regex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+                let regex =
+                    /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
                 if (regex.test(url)) {
                     this.url = url;
                 }
             }
-            // if (localStorage.getItem("joke")) {
-            //     let joke = localStorage.getItem("joke");
-            //     this.jokesCurrent = this.parse(joke);
-            // }
-
-        }
+        },
+        localJokes: function () {
+            return JSON.parse(localStorage.getItem("jokes"));
+        },
+        localStorageSize: function () {
+            let _lsTotal = 0,_xLen, _x;
+            for (_x in localStorage) {
+                if (!localStorage.hasOwnProperty(_x)) continue;
+                _xLen = (localStorage[_x].length + _x.length) * 2;
+                _lsTotal += _xLen;
+            }
+            _t = (_lsTotal / 1024).toFixed(2);
+            return _t;
+        },
     },
     watch: {
         likedSwitch: async function () {
             if (this.likedSwitch) {
-                if (!this.jokesLiked) {
+                if (this.jokesLiked == []) {
                     this.jokesLiked = [];
                     await this.showNotification("no liked jokes");
                     return;
                 }
                 this.jokesLimit = this.jokesLiked.length - 1;
-                this.jokesCount = 0;
+                await setCount();
                 this.jokesList = this.jokesLiked;
                 return;
             }
@@ -236,11 +268,6 @@ const app = new Vue({
     },
     mounted() {
         this.getJokes();
-        if (!this.displayPop) {
-            setTimeout(function (params) {
-                $("#cls1").text("click anywhere to close");
-            }, 7000);
-        }
         this.getUrl();
         this.device = this.isMobile();
         $("select").formSelect();
@@ -294,5 +321,8 @@ document.addEventListener("keydown", function (event) {
         app.removeLiked();
     } else if (event.keyCode == 80) {
         app.togglePop();
+    } else if (event.keyCode == 40) {
+        app.loadLiked();
     }
 });
+

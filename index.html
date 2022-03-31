@@ -59,28 +59,30 @@
         <div class="col tri red-text"><i class="material-icons" @click="closePop">close</i></div>
         <h3 class="black-text" v-show="view">Welcome</h3>
         <p v-show="view" class="black-text">this are your shortcuts</p>
-        <h3 class="black-text"  v-show="!view">please select type of joke</h3>
+        <h4 class="black-text" v-show="!view">please select type of joke</h4>
         <p class="black-text center-align flow-text">
         <div v-show="device && view" class="left-align">
           <li><code>swipe-up</code> to like</li>
           <li><code>swipe-left</code> go to previous entry</li>
           <li><code>swipe-right</code> go to next entry</li>
           <li><code>swip-down</code> to toggle this popup</li>
+          <li><code>click logo</code> to reload page</li>
         </div>
         <div v-show="!device && view" class="left-align">
           <li><code>top-arrow-key/space</code> to like</li>
           <li><code>left-arrow-key</code> go to previous entry</li>
           <li><code>right-arrow-key</code> go to next entry</li>
+          <li><code>down-arrow-key</code> to view liked jokes</li>
           <li><code>enter-key</code> fetch new jokes</li>
           <li><code>delete-key</code> to unlike</li>
           <li><code>C</code> to change color</li>
-          <li><code>P</code> to close/open this popup</li>
+          <li><code>P</code> to toggle this popup</li>
           <li><code>w</code> to refresh page</li>
         </div>
         <div v-show="!view" class="">
-          <div class="input-field col s8 left-align">
-            <select class="options" multiple>
-              <option value="all" disabled>all</option>
+          <div class="input-field left-align">
+            <select class="options" value="hello world" multiple>
+              <option value="all" disabled selected>all</option>
               <option value="pun">pun</option>
               <option value="Programming">Programming</option>
               <option value="Miscellaneous">Miscellaneous</option>
@@ -88,15 +90,24 @@
               <option value="Dark">Dark</option>
             </select>
             <label>select your preferred joke</label>
-          </div>
+          
           <button class="btn waves-effect light-blue waves-light" @click="setFunc" type="submit">set
             <i class="material-icons right">settings</i>
           </button>
         </div>
+          <br>
+          <div class="clear">
+          <h4  class="black-text"> clear stored jokes on device</h4>
+          <label for="clearData">click below to clear</label><br>
+          <button class="btn waves-effect red accent-2 waves-light" id="clearData" @click="clear" type="submit">clear data
+            <i class="material-icons right">delete</i>
+          </button>
+        </div>
+        </div>
 
-        
+
         </p>
-        <div class="row"  v-show="view">
+        <div class="row" v-show="view">
           <a href="https://bethropolis.github.io/"><button class="btn black darken-2 text-white">Github</button></a>
           <a href="https://github.com/bethropolis/jokes-app"><button class="btn light-blue">More project</button></a>
         </div>
@@ -105,7 +116,7 @@
     </div>
     <nav>
       <div class="nav-wrapper jks">
-        <a href="#" class="caption user brand-logo text0-accent-4 left" title="jokes to like">J<span
+        <a href="#" class="caption user brand-logo logo text0-accent-4 left" @click.prevent="window.location.reload()" title="jokes to like">J<span
             class="red-text">T</span>L</a>
         <ul id="nav-mobile" class="right">
           <li><a href="#" v-if="likedSwitch" class="left" @click.prevent="loadJokes">jokes</a></li>
@@ -116,10 +127,9 @@
           <li>
             <a href="#" v-if="!likedSwitch" @click.prevent="settings" title="liked jokes"><i
                 class="material-icons">settings</i></a>
-          </li>          
+          </li>
           <li>
-            <a href="#"  @click.prevent="share" title="share joke to friends"><i
-                class="material-icons">share</i></a>
+            <a href="#" @click.prevent="share" title="share joke to friends"><i class="material-icons">share</i></a>
           </li>
         </ul>
       </div>
@@ -134,7 +144,7 @@
         </p>
       </div>
     </div>
-    <div class="center container" id="joke">
+    <div class="center container  flow-text" id="joke">
       <h3 v-if="jokesCurrent.type == 'single'" class="thick">
         {{jokesCurrent.joke}}
       </h3>

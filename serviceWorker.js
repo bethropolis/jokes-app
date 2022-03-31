@@ -42,20 +42,34 @@ self.addEventListener("activate", (e) => {
     })
   );
 });
-//Fetching content using Service Worker
-// self.addEventListener("fetch", (e) => {
-//   e.respondWith(
-//     (async () => {
-//       const r = await caches.match(e.request);
-//       // console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
-//       if (r) {
-//         return r;
-//       }
-//       const response = await fetch(e.request);
-//       // const cache = await caches.open(assets);
-//       // console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
-//       //cache.put(e.request, response.clone());
-//       return response;
-//     })()
-//   );
-// });
+// Fetching content using Service Worker
+self.addEventListener('fetch', function (event) {
+  let online = navigator.onLine
+  if (!online) {
+      event.respondWith(
+          caches.match(event.request).then(function (res) {
+              if (res) {
+                  return res;
+              }
+              requestBackend(event);
+          })
+      )
+  }
+});
+function requestBackend(event) {
+  var url = event.request.clone();
+  return fetch(url).then(function (res) {
+      //if not a valid response send the error
+      if (!res || res.status !== 200 || res.type !== 'basic') {
+          return res;
+      }
+
+      var response = res.clone();
+
+      caches.open(CACHE_VERSION).then(function (cache) {
+          cache.put(event.request, response);
+      });
+
+      return res;
+  })
+}
