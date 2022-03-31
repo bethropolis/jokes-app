@@ -151,7 +151,7 @@ const app = new Vue({
                 document.querySelector(".notification").classList.remove("show");
             }, 600);
         },
-        hideNitification: function () {
+        hideNotification: function () {
             document.querySelector(".notification").classList.remove("show");
         },
         loadJokes: function () {

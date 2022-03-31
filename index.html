@@ -50,7 +50,7 @@
           <p>{{notify}}</p>
         </div>
         <div class="notification-closet center-align col s2">
-          <i class="material-icons" @click="hideNitification">close</i>
+          <i class="material-icons" @click="hideNotification">close</i>
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
           <li><code>swipe-up</code> to like</li>
           <li><code>swipe-left</code> go to previous entry</li>
           <li><code>swipe-right</code> go to next entry</li>
-          <li><code>swip-down</code> to toggle this popup</li>
+          <li><code>swipe-down</code> to toggle this popup</li>
           <li><code>click logo</code> to reload page</li>
         </div>
         <div v-show="!device && view" class="left-align">
