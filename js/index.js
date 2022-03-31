@@ -212,8 +212,13 @@ const app = new Vue({
             this.displayPop = !this.displayPop;
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
-        // toggle liked switch
-
+        toggleLiked: function () {
+            if(this.likedSwitch) {
+                this.loadJokes();
+                return;
+            }
+            this.loadLiked();
+        },
         getUrl: function () {
             if (localStorage.getItem("url")) {
                 let url = localStorage.getItem("url");
@@ -322,7 +327,7 @@ document.addEventListener("keydown", function (event) {
     } else if (event.keyCode == 80) {
         app.togglePop();
     } else if (event.keyCode == 40) {
-        app.loadLiked();
+        app.toggleLiked();
     }
 });
 
