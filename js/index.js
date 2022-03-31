@@ -20,7 +20,7 @@ const app = new Vue({
             "#5d4037",
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
-        url: "https://v2.jokeapi.dev/joke/All?amount=20",
+        url: "https://v2.jokeapi.dev/joke/Any?amount=20",
         device: true,
     },
     methods: {
@@ -114,6 +114,7 @@ const app = new Vue({
         },
         //delete jokes from local storage
         closePop: function () {
+            if(this.getUrl()) this.toggleView();
             this.displayPop = true;
             localStorage.setItem("pop", JSON.stringify(true));
         },
@@ -200,7 +201,7 @@ const app = new Vue({
         },
         getOptions: function () {
             let s = $("input").val();
-            if (!s) return 'all';
+            if (!s) return 'Any';
             let q = s.split(" ").join("");
             return q;
         },
@@ -209,7 +210,7 @@ const app = new Vue({
             this.view = !this.view;
             this.togglePop();
         },
-        togglePop: function () {
+        togglePop: function () {          
             this.displayPop = !this.displayPop;
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
@@ -229,6 +230,7 @@ const app = new Vue({
                     this.url = url;
                 }else{
                     this.url = "https://v2.jokeapi.dev/joke/All?amount=20";
+                    return true
                 }
             }
         },
