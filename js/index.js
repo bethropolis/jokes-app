@@ -10,9 +10,17 @@ const app = new Vue({
         jokesCount: 0,
         jokesLimit: 9,
         jokesCurrent: JSON.parse(localStorage.getItem("joke")) || [],
-        colors: ["#d32f2f ", "#ba68c8", "#3d5afe", "#00796b", "#03a9f4", "#9e9d24 ", "#5d4037",],
-        urlEnd: 'https://v2.jokeapi.dev/joke/',
-        url: localStorage.getItem("url")||"https://v2.jokeapi.dev/joke/Any?amount=20",
+        colors: [
+            "#d32f2f ",
+            "#ba68c8",
+            "#3d5afe",
+            "#00796b",
+            "#03a9f4",
+            "#9e9d24 ",
+            "#5d4037",
+        ],
+        urlEnd: "https://v2.jokeapi.dev/joke/",
+        url: "https://v2.jokeapi.dev/joke/Any?amount=20",
         device: false,
     },
     methods: {
@@ -22,9 +30,9 @@ const app = new Vue({
             $.get(url, (data) => {
                 if (data.error) return alert("an error occured getting more jokes");
                 this.jokesList = data.jokes;
-                this.jokesCurrent = this.jokesList[0];
-            },()=>{
-                this.showNotification("could not fetch new message");
+                this.store('jokes', data.jokes, false);
+                 //this.jokesCurrent = this.jokesList[0];
+
             });
         },
         isLimit: function (cancel = false) {
@@ -49,8 +57,11 @@ const app = new Vue({
             this.jokesCount = c;
         },
         prevJoke: function () {
-            if (this.isLimit()) return;
-            this.jokesCount = this.jokesCount - 1;
+            if (this.isLimit()) {
+                this.reset();
+                return true;
+            }
+            this.jokesCount = this.jokesCount-1;
         },
         setFunc: function () {
             let inp = this.getOptions();
@@ -121,13 +132,13 @@ const app = new Vue({
             }
         }, // update url + slug
         updateUrl: function (slug) {
-            let url = this.urlEnd + slug+'?amount=20';
+            let url = this.urlEnd + slug + "?amount=20";
             this.url = url;
             localStorage.setItem("url", url);
             this.showNotification("url updated");
             this.togglePop();
             this.getJokes();
-            },
+        },
         showNotification: function (txt) {
             this.notify = txt;
             document.querySelector(".notification").classList.add("show");
@@ -167,9 +178,9 @@ const app = new Vue({
             this.togglePop();
         },
         getOptions: function () {
-            let s = $('input').val();
-            let q = s.split(' ').join('');
-            return q
+            let s = $("input").val();
+            let q = s.split(" ").join("");
+            return q;
         },
         // toggle view and call display pop
         toggleView: function () {
@@ -180,6 +191,20 @@ const app = new Vue({
             this.displayPop = !this.displayPop;
             localStorage.setItem("pop", JSON.stringify(this.displayPop));
         },
+        getUrl: function () {
+            if (localStorage.getItem("url")) {
+                let url = localStorage.getItem("url");
+                let regex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+                if (regex.test(url)) {
+                    this.url = url;
+                }
+            }
+            // if (localStorage.getItem("joke")) {
+            //     let joke = localStorage.getItem("joke");
+            //     this.jokesCurrent = this.parse(joke);
+            // }
+
+        }
     },
     watch: {
         likedSwitch: async function () {
@@ -216,8 +241,9 @@ const app = new Vue({
                 $("#cls1").text("click anywhere to close");
             }, 7000);
         }
+        this.getUrl();
         this.device = this.isMobile();
-        $('select').formSelect();
+        $("select").formSelect();
     },
 });
 

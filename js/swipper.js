@@ -64,18 +64,18 @@ const Swipe = class {
 
 
         if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
-            if (xDiff > 0 && this.options.onLeft) {
+            if (xDiff > 12 && this.options.onLeft) {
                 /* left swipe */
                 this.onLeft();
-            } else if (this.options.onRight) {
+            } else if (xDiff < -12 && this.options.onRight) {
                 /* right swipe */
                 this.onRight();
             }
         } else {
-            if (yDiff > 0 && this.options.onUp) {
+            if (yDiff > 12 && this.options.onUp) {
                 /* up swipe */
                 this.onUp();
-            } else if (this.options.onDown) {
+            } else if (yDiff < -12 &&this.options.onDown) {
                 /* down swipe */
                 this.onDown();
             }
