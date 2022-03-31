@@ -11,6 +11,8 @@ const assets = [
   "./lib/materialize/css/materialize.min.css",
   "./lib/materialize/js/materialize.min.js",
   "./lib/materialize/css/icon.css",
+  "./lib/screenshot/screenshot.js",
+  "./lib/screenshot/default.mp3",
   "./lib/materialize/css/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
   "./img/apple-touch-icon.png",
   "./img/favicon.ico",

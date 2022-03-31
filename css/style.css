@@ -12,6 +12,7 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  scroll-behavior: smooth;
 }
 .logo{
   user-select: none;
@@ -37,6 +38,17 @@ nav ul li{
     animation: jkp-animation 0.9s ease-in-out;
     animation-fill-mode: forwards;
     -webkit-animation: jkp-animation 0.9s ease-in-out;
+}
+.dark,.dark:hover{
+  background-color: #1e272e;
+  color: #ffffff;
+}
+.custom, .custom:hover{
+background: rgb(131,58,180);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+}
+.action{
+  z-index: 100;
 }
 /* fade in and out */
 @keyframes jkp-animation {
@@ -176,8 +188,9 @@ li{
   display: flex;
   justify-content: center;
 }
-
-
+.no-h:hover{
+  background-color: none;
+}
 
 
 .jkp-btn:focus {

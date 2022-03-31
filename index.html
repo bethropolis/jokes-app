@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/materialize/js/materialize.min.js"></script>
+  <script src="lib/screenshot/screenshot.js"></script>
   <script src="lib/vue/vue.min.js"></script>
   <script src="js/swipper.js"></script>
 </head>
@@ -54,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!displayPop" class="cover jks">
+    <div v-show="!displayPop" class="cover jks" style="z-index: 120;">
       <div class="container center-align hoverable">
         <div class="col tri red-text"><i class="material-icons" @click="closePop">close</i></div>
         <br>
@@ -70,10 +71,11 @@
           <li><code>click logo</code> to reload page</li>
         </div>
         <div v-show="!device && view" class="left-align">
-          <li><code>top-arrow-key/space</code> to like</li>
+          <li><code>top-arrow-key</code> to like</li>
           <li><code>left-arrow-key</code> go to previous entry</li>
           <li><code>right-arrow-key</code> go to next entry</li>
           <li><code>down-arrow-key</code> to view liked jokes</li>
+          <li><code>space key</code> to screenshot</li>
           <li><code>enter-key</code> fetch new jokes</li>
           <li><code>delete-key</code> to unlike</li>
           <li><code>C</code> to change color</li>
@@ -121,8 +123,21 @@
             </form>
             <p class="red-text"><span class="bold accent-4">*</span>some of this jokes may contain explicit, racist, political, religious and sexist content.</p>
           </div>
-          <br>
+          <div> 
+            <hr>
+            <h4 class="black-text">change interface color</h4>
+          <button v-show="colorTheme"  @click="colorMode" class="btn waves-effect tooltipped  waves-light  custom" data-position="top" data-tooltip="allow background to continuously change">dynamic mode
+            <i class="material-icons right">bulb</i>
+          </button>
+          <button v-show="!colorTheme"  @click="darkMode"  class="btn waves-effect tooltipped waves-light dark" data-position="top" data-tooltip="static dark user interface">dark mode
+            <i class="material-icons right">moon</i>
+          </button>
+          <label for="colorPick" ><a class="tooltipped z-depth-1 jks btn-floating" data-tooltip="select custom color"></a>
+            <input @change="customColor" type="color" id="colorPick" hidden> 
+          </label> 
+        </div>
           <div class="clear">
+            <hr>
             <h4 class="black-text"> clear stored jokes on device</h4>
             <label for="clearData">click below to clear</label><br>
             <button class="btn waves-effect red accent-2 waves-light" id="clearData" @click="clear" type="submit">clear
@@ -134,8 +149,9 @@
         </p>
         <div class="row" v-show="view">
           <a href="https://github.com/bethropolis/jokes-app/"><button
-              class="btn black darken-2 text-white">Github</button></a>
-          <a href="https://bethropolis.github.io/"><button class="btn light-blue">More projects</button></a>
+              class="btn black darken-2 waves-effect tooltipped waves-ligh z-depth-1 text-white" data-tooltip="download source code on github">Github</button></a>
+          <a href="https://bethropolis.github.io/">
+            <button class="btn light-blue z-depth-1 waves-effect tooltipped  waves-ligh" data-tooltip="check my profile for more projects">More projects</button></a>
         </div>
         <span class="red-text" id="cls1"></span>
       </div>
@@ -181,11 +197,11 @@
         {{jokesCurrent.delivery}}
       </h3>
     </div>
-    <button @click="likeJoke" v-show="!likedSwitch" class="center-align row btn-floating red-text jkp center pulse">
+    <button @click="likeJoke" v-show="!likedSwitch" class="center-align row btn-floating red-text jkp center action pulse">
       <span class="material-icons  center red-text center-align" id="like-it">favorite</span>
     </button>
-    <button @click="removeLiked" v-show="likedSwitch" class="center-align row btn-floating red-text jkp center pulse">
-      <span class="material-icons  center red-text center-align" id="like-it">delete</span>
+    <button @click="removeLiked" v-show="likedSwitch" class="center-align row btn-floating red-text jkp center action pulse">
+      <span class="material-icons  center red-text  center-align" id="like-it">delete</span>
     </button>
     <button @click="nextJoke" class="btn jkp jkp-btn waves-effect waves-light">another joke</button>
   </div>
