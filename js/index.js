@@ -33,7 +33,8 @@ const app = new Vue({
             }
             let url = this.url;
             await $.get(url, (data) => {
-                if (data.error) return alert("an error occured getting more jokes");
+                if (data.error ) return alert("an error occured getting more jokes");
+                if(this.likedSwitch)return ;
                 this.jokesList = data.jokes;
                 this.store("jokes", data.jokes, true);
                 //this.jokesCurrent = this.jokesList[0];
@@ -97,7 +98,7 @@ const app = new Vue({
                 this.showNotification("Joke Liked!");
                 return;
             }
-            this.showNotification("already liked");
+            this.removeLiked()          
         },
         changeColor: function (id = Math.floor(Math.random() * 6) + 1) {
             document.documentElement.style.setProperty("--main", this.colors[id]);
