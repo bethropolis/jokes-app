@@ -361,6 +361,7 @@ document.addEventListener("keydown", function (event) {
     } else if (event.keyCode == 46) {
         app.removeLiked();
     } else if (event.keyCode == 80) {
+        app.view = true;
         app.togglePop();
     } else if (event.keyCode == 40) {
         app.toggleLiked();
