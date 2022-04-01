@@ -1,5 +1,6 @@
 const Joke = "funny-V1";
 const assets = [
+  "./",
   "./index.html",
   "./serviceWorker.js",
   "./app.webmanifest",
@@ -18,47 +19,55 @@ const assets = [
   "./img/favicon.ico",
 ];
 
-// Installing Service Worker
-self.addEventListener("install", (e) => {
-  //console.log("[Service Worker] Install");
-  e.waitUntil(
-    (async () => {
-      const cache = await caches.open(Joke);
-     // console.log("[Service Worker] Caching all: app shell and content");
-      await cache.addAll(assets);
-    })()
+self.addEventListener('install', function (event) {
+  event.waitUntil(
+      caches.open(Joke)
+          .then(function (cache) {
+              return cache.addAll(assets);
+          })
   );
 });
 
-self.addEventListener("activate", (e) => {
-  e.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(
-        keyList.map((key) => {
-          if (key === Joke) {
-            return;
-          }
-          return caches.delete(key);
-        })
-      );
-    })
-  );
+self.addEventListener('fetch', function (event) {
+  let online = navigator.onLine
+  if (!online) {
+      event.respondWith(
+          caches.match(event.request).then(function (res) {
+              if (res) {
+                  return res;
+              }
+              requestBackend(event);
+          })
+      )
+  }
 });
-// Fetching content using Service Worker
 
-self.addEventListener("fetch", (e) => {
-  e.respondWith(
-    (async () => {
-      const r = await caches.match(e.request);
-      // console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
-      if (r) {
-        return r;
+self.addEventListener('activate', function (event) {
+  event.waitUntil(
+      caches.keys().then(function (keys) {
+          return Promise.all(keys.map(function (key, i) {
+              if (key !== Joke) {
+                  return caches.delete(keys[i]);
+              }
+          }))
+      })
+  )
+});
+
+function requestBackend(event) {
+  var url = event.request.clone();
+  return fetch(url).then(function (res) {
+      //if not a valid response send the error
+      if (!res || res.status !== 200 || res.type !== 'basic') {
+          return res;
       }
-      const response = await fetch(e.request);
-      // const cache = await caches.open(assets);
-      // console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
-      //cache.put(e.request, response.clone());
-      return response;
-    })()
-  );
-});
+
+      var response = res.clone();
+
+      caches.open(Joke).then(function (cache) {
+          cache.put(event.request, response);
+      });
+
+      return res;
+  })
+}
