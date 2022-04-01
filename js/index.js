@@ -114,7 +114,7 @@ const app = new Vue({
                 .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
                 .setAttribute("content", id);
         },
-        changeColor: function (id = Math.floor(Math.random() * 9)) {
+        changeColor: function (id = Math.floor(Math.random() * 8)+1) {
             if (this.colorTheme) return;
             this.setColor(this.colors[id]);
         },
