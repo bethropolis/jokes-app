@@ -23,7 +23,7 @@ const app = new Vue({
             "#5d4037",
         ],
         urlEnd: "https://v2.jokeapi.dev/joke/",
-        url: "https://v2.jokeapi.dev/joke/Misc?safe-mode&amount=10",
+        url: "https://v2.jokeapi.dev/joke/Any?safe-mode&amount=10",
         device: true,
     },
     methods: {
