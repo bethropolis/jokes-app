@@ -169,7 +169,8 @@ li{
 }
 .cover .container  .tri{
   position: absolute;
-  right: 20px;
+  right: 15px;
+  top: 1px;
   font-size: 27px;
   width: 30px;
   border-radius: 50%;

@@ -58,7 +58,6 @@
     <div v-show="!displayPop" class="cover jks" style="z-index: 120;">
       <div class="container center-align hoverable">
         <div class="col tri red-text"><i class="material-icons" @click="closePop">close</i></div>
-        <br>
         <h3 class="black-text" v-show="view">Welcome</h3>
         <p v-show="view" class="black-text">this are your shortcuts</p>
         <h4 class="black-text" v-show="!view">please select type of joke</h4>
@@ -71,7 +70,7 @@
           <li><code>click logo</code> to reload page</li>
         </div>
         <div v-show="!device && view" class="left-align">
-          <li><code>top-arrow-key</code> to like</li>
+          <li><code>arrow-keys</code> to like</li>
           <li><code>left-arrow-key</code> go to previous entry</li>
           <li><code>right-arrow-key</code> go to next entry</li>
           <li><code>down-arrow-key</code> to view liked jokes</li>
