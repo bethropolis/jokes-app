@@ -93,7 +93,7 @@ const app = new Vue({
         // toggle pop
         likeJoke: function () {
             // do not store joke match an item in jokesLiked.id
-            if (this.jokesLiked.includes(this.jokesCurrent)) return this.showNotification("You already liked this joke");
+            if (this.jokesLiked.includes(this.jokesCurrent)) return
             if (!this.likedSwitch) {
                 if (this.jokesLiked) {
                     this.store("like", this.jokesCurrent, true);
