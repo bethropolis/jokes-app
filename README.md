@@ -40,7 +40,7 @@ get it at https://jokes-to-like-bethropolis.vercel.app/
 <hr>
 
 ## Creator
-Built by Bethuel Kipsang
+Built by bethropolis
 
 ## Attributions
 The app was built using
